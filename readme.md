@@ -8,6 +8,7 @@ Docker environment required to run Symfony (based on official php and mysql dock
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 [Source code](https://github.com/systemsdk/docker-nginx-php-symfony.git)
+## [Документація!!](https://documenter.getpostman.com/view/16837715/2sA3QqgCrM)
 
 ## Requirements
 * Docker version 18.06 or later
@@ -109,67 +110,6 @@ make start-staging
 make migrate-no-test
 make messenger-setup-transports
 ```
-
-## Setting up PROD environment locally
-1.You can clone this repository from GitHub or install via composer.
-
-If you have installed composer and want to install environment via composer you can use next cmd command:
-```bash
-composer create-project systemsdk/docker-nginx-php-symfony example-app
-```
-
-2.Edit docker-compose-prod.yml and set necessary user/password for MySQL and RabbitMQ.
-
-Note: Delete var/mysql-data folder if it is exist.
-
-3.Edit env.prod and set necessary user/password for MySQL and RabbitMQ.
-
-4.Build, start and install the docker images from your terminal:
-```bash
-make build-prod
-make start-prod
-```
-
-5.Make sure that you have installed migrations / messenger transports:
-```bash
-make migrate-no-test
-make messenger-setup-transports
-```
-
-## Getting shell to container
-After application will start (`make start`) and in order to get shell access inside symfony container you can run following command:
-```bash
-make ssh
-```
-Note 1: Please use next make commands in order to enter in other containers: `make ssh-nginx`, `make ssh-supervisord`, `make ssh-mysql`, `make ssh-rabbitmq`.
-
-Note 2: Please use `exit` command in order to return from container's shell to local shell.
-
-## Building containers
-In case you edited Dockerfile or other environment configuration you'll need to build containers again using next commands:
-```bash
-make down
-make build
-make start
-```
-Note: Please use environment-specific commands if you need to build test/staging/prod environment, more details can be found using help `make help`.
-
-## Start and stop environment containers
-Please use next make commands in order to start and stop environment:
-```bash
-make start
-make stop
-```
-Note 1: For staging environment need to be used next make commands: `make start-staging`, `make stop-staging`.
-
-Note 2: For prod environment need to be used next make commands: `make start-prod`, `make stop-prod`.
-
-## Stop and remove environment containers, networks
-Please use next make commands in order to stop and remove environment containers, networks:
-```bash
-make down
-```
-Note: Please use environment-specific commands if you need to stop and remove test/staging/prod environment, more details can be found using help `make help`.
 
 ## Additional main command available
 ```bash
