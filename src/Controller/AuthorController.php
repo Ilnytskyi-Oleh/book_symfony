@@ -27,11 +27,10 @@ class AuthorController extends AbstractController
     #[Route('', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em, ValidatorInterface $validator): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
         $author = new Author();
-        $author->setFirstName($data['first_name']);
-        $author->setLastName($data['last_name']);
-        $author->setMiddleName($data['middle_name'] ?? null);
+        $author->setFirstName($request->request->get('first_name'));
+        $author->setLastName($request->request->get('last_name'));
+        $author->setMiddleName($request->request->get('middle_name'));
 
         $errors = $validator->validate($author);
         if (count($errors) > 0) {
@@ -48,6 +47,16 @@ class AuthorController extends AbstractController
         return $this->json($author, 201);
     }
 
+    #[Route('/{id}', methods: ['GET'])]
+    public function show(AuthorRepository $authorRepository, int $id): JsonResponse
+    {
+        $author = $authorRepository->find($id);
+        if (!$author) {
+            return $this->json(['error' => 'Author not found'], 404);
+        }
+        return $this->json($author);
+    }
+
     #[Route('/{id}', methods: ['PUT'])]
     public function update(
         int $id,
@@ -62,10 +71,9 @@ class AuthorController extends AbstractController
             return $this->json(['error' => 'Author not found'], 404);
         }
 
-        $data = json_decode($request->getContent(), true);
-        $author->setFirstName($data['first_name']);
-        $author->setLastName($data['last_name']);
-        $author->setMiddleName($data['middle_name'] ?? null);
+        $author->setFirstName($request->request->get('first_name'));
+        $author->setLastName($request->request->get('last_name'));
+        $author->setMiddleName($request->request->get('middle_name'));
 
         $errors = $validator->validate($author);
         if (count($errors) > 0) {

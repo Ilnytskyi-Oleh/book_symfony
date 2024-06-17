@@ -102,10 +102,13 @@ class BookController extends AbstractController
         return $this->json($book);
     }
 
-
-
     #[Route('/{id}', methods: ['PUT'])]
-    public function update(Request $request, BookRepository $bookRepository, EntityManagerInterface $em, int $id): JsonResponse
+    public function update(
+        Request $request,
+        BookRepository $bookRepository,
+        EntityManagerInterface $em,
+        int $id
+    ): JsonResponse
     {
         $book = $bookRepository->find($id);
         if (!$book) {
@@ -146,6 +149,24 @@ class BookController extends AbstractController
 
         $em->flush();
         return $this->json($book);
+    }
+
+    #[Route('/{id}', methods: ['DELETE'])]
+    public function delete(
+        int $id,
+        EntityManagerInterface $em,
+        BookRepository $bookRepository,
+    ): JsonResponse
+    {
+        $book = $bookRepository->find($id);
+        if (!$book) {
+            return $this->json(['error' => 'Book not found'], 404);
+        }
+
+        $em->remove($book);
+        $em->flush();
+
+        return $this->json(null, 204);
     }
 }
 
